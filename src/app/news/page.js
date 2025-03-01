@@ -17,10 +17,6 @@ const feedUrls = [
     name: 'Carbon Brief'
   },
   {
-    url: 'https://www.sciencedaily.com/rss/environment.xml',
-    name: 'Science Daily'
-  },
-  {
     url: 'https://www.theguardian.com/environment/rss',
     name: 'The Guardian'
   },
