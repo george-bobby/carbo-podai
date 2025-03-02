@@ -68,9 +68,9 @@ export default function Hero() {
 								</button>
 							</Link>
 
-							<Link href='/ecocenter'>
+							<Link href='/shop'>
 								<button className='px-8 py-3 bg-transparent border border-emerald-500/30 text-emerald-400 rounded-md font-medium hover:bg-emerald-500/10 transition-all duration-300 hover:border-emerald-500'>
-									Learn More
+									View Shop
 								</button>
 							</Link>
 						</div>
