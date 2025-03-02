@@ -57,12 +57,12 @@ export default function Footer() {
 								},
 								{
 									icon: <FaComments className='text-emerald-400' />,
-									label: 'EcoChat Assistant',
+									label: 'Activity Analyzer',
 									href: '/chatbot',
 								},
 								{
 									icon: <FaLeaf className='text-emerald-400' />,
-									label: 'Eco Learning Center',
+									label: 'Electic Appliances',
 									href: '/ecocenter',
 								},
 								{
