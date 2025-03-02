@@ -1,175 +1,176 @@
-"use client";
+'use client';
+import React, { useState } from 'react';
+import {
+	FaLeaf,
+	FaChartLine,
+	FaCalculator,
+	FaArrowRight,
+} from 'react-icons/fa';
+import Link from 'next/link';
 
-import { useEffect } from "react";
-import { gsap } from "gsap";
-import Link from "next/link";
-import "./page.css";
+export default function Hero() {
+	const [hoveredCard, setHoveredCard] = useState(null);
 
-const TechFestSection = () => {
-  useEffect(() => {
-    // Animating the text when the component mounts
-    gsap.from("#hero-content h1", {
-      opacity: 0,
-      y: -50,
-      duration: 1.2,
-      ease: "power3.out",
-    });
+	const features = [
+		{
+			icon: <FaLeaf className='h-6 w-6' />,
+			title: 'Track Your Footprint',
+			description:
+				'Monitor your daily carbon emissions and see your environmental impact in real-time.',
+		},
+		{
+			icon: <FaChartLine className='h-6 w-6' />,
+			title: 'Analyze Trends',
+			description:
+				'Visualize your progress over time with detailed charts and personalized insights.',
+		},
+		{
+			icon: <FaCalculator className='h-6 w-6' />,
+			title: 'Calculate Impact',
+			description:
+				'Make informed decisions with our comprehensive carbon calculator tool.',
+		},
+	];
 
-    gsap.from("#hero-content p", {
-      opacity: 0,
-      y: 20,
-      duration: 1.5,
-      delay: 0.3,
-      ease: "power3.out",
-    });
+	return (
+		<div className='relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900'>
+			{/* Background Elements */}
+			<div className='absolute -top-40 -right-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl'></div>
+			<div className='absolute top-60 -left-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl'></div>
 
-    const calculateButton = document.querySelector("a[href='/calculator']");
+			<div className='container mx-auto px-4 py-20 md:py-28'>
+				{/* Main Hero Content */}
+				<div className='flex flex-col md:flex-row gap-12 items-center justify-between'>
+					{/* Left Content - Text */}
+					<div className='w-full md:w-1/2 space-y-6 text-center md:text-left'>
+						<div className='inline-block px-4 py-1 bg-emerald-900/50 rounded-full mb-2 backdrop-blur-sm border border-emerald-500/20'>
+							<p className='text-xs md:text-sm font-medium text-emerald-400 tracking-wide'>
+								REDUCE · TRACK · IMPROVE
+							</p>
+						</div>
 
-    const handleMouseEnter = () => {
-      gsap.to(calculateButton, {
-        backgroundColor: "#2ECC71",
-        color: "#ffffff",
-        boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.2)",
-        borderColor: "#016837",
-        duration: 0.3,
-        scale: 1.1, // Scale effect on hover
-      });
-    };
+						<h1 className='text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight'>
+							Track Your{' '}
+							<span className='text-emerald-400'>Carbon Footprint</span> in
+							Real-Time
+						</h1>
 
-    const handleMouseLeave = () => {
-      gsap.to(calculateButton, {
-        backgroundColor: "transparent",
-        color: "#00695C",
-        boxShadow: "none",
-        borderColor: "#B2DFDB",
-        duration: 0.3,
-        scale: 1, // Reset scale after hover
-      });
-    };
+						<p className='text-gray-300 text-lg md:text-xl max-w-xl leading-relaxed font-light'>
+							Take control of your environmental impact with our intuitive
+							dashboard and personalized insights.
+						</p>
 
-    if (calculateButton) {
-      calculateButton.addEventListener("mouseenter", handleMouseEnter);
-      calculateButton.addEventListener("mouseleave", handleMouseLeave);
-    }
+						<div className='flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start'>
+							<Link href='/calculator'>
+								<button className='px-8 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-md font-medium shadow-lg hover:shadow-emerald-500/20 transition-all duration-300 hover:translate-y-1 flex items-center justify-center gap-2 group'>
+									Start Tracking
+									<FaArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform duration-300' />
+								</button>
+							</Link>
 
-    return () => {
-      if (calculateButton) {
-        calculateButton.removeEventListener("mouseenter", handleMouseEnter);
-        calculateButton.removeEventListener("mouseleave", handleMouseLeave);
-      }
-    };
-  }, []);
+							<Link href='/ecocenter'>
+								<button className='px-8 py-3 bg-transparent border border-emerald-500/30 text-emerald-400 rounded-md font-medium hover:bg-emerald-500/10 transition-all duration-300 hover:border-emerald-500'>
+									Learn More
+								</button>
+							</Link>
+						</div>
 
-  return (
-    <section className="mx-8 mt-8">
-      <div
-        id="hero-section"
-        className="pt-20 pb-40 rounded-2xl max-w-7xl m-auto"
-      >
-        <div
-          id="hero-content"
-          className="max-w-md m-auto text-center font-sans"
-        >
-          <h1
-            className="font-bold text-shadow text-5xl text-white hover:text-green-400 transition duration-300 ease-in-out"
-            id="hero-title"
-          >
-            MEASURE. REDUCE. SUSTAIN.
-          </h1>
-          <p
-            className="font-semibold text-shadow text-purple-200 mt-5 font-sans text-xl"
-            id="hero-description"
-          >
-            Measure your carbon footprint, reduce your impact, and build a
-            greener future with Carbo.
-          </p>
-          <Link href="/calculator">
-            <button className="flex m-auto mt-10 items-center justify-between overflow-hidden w-48 shadow-xl hover:shadow-2xl text:transparent transition transform hover:-translate-y-1 ease padding rounded-full m-3 text-green-700 font-bold bg-gradient-to-r from-green-300 to-green-200 hover:scale-105">
-              <span className="pl-8">Calculate Now</span>
-              <span className="px-3 py-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </span>
-            </button>
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-};
+						<div className='pt-6'>
+							<p className='text-gray-400 text-sm'>
+								Join <span className='text-white font-medium'>15,000+</span>{' '}
+								eco-conscious users making a difference
+							</p>
+						</div>
+					</div>
 
-export default function Page() {
-  return (
-    <>
-      <div
-        className="min-h-screen bg-[#A5D6A7] py-6 flex flex-col gap-6 px-4 sm:px-6 md:px-10 lg:px-16"
-        style={{
-          backgroundImage: "url('/earth3.webp')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {/* TechFest Section */}
-        <TechFestSection />
+					{/* Right Content - Image or Graphics */}
+					<div className='w-full md:w-1/2 flex justify-center md:justify-end'>
+						<div className='relative w-full max-w-md'>
+							<div className='absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-emerald-700/20 rounded-2xl blur-xl transform rotate-3'></div>
+							<div className='relative bg-slate-800/90 backdrop-blur-sm border border-slate-700 p-6 rounded-2xl shadow-2xl transform transition-all duration-500 hover:scale-105'>
+								<div className='flex justify-between items-center mb-6'>
+									<div className='flex items-center gap-2'>
+										<div className='h-10 w-10 rounded-full bg-emerald-500 flex items-center justify-center'>
+											<FaLeaf className='text-white' />
+										</div>
+										<span className='text-white font-bold'>
+											Carbon Dashboard
+										</span>
+									</div>
+									<div className='text-emerald-400 text-sm font-medium'>
+										Today
+									</div>
+								</div>
 
-        {/* FAQ Section */}
-        <section className="bg-[#AED581] py-8 px-6 sm:px-8 md:px-12 rounded-xl shadow-xl mt-10">
-          <h3 className="text-2xl sm:text-3xl lg:text-4xl text-center font-bold mb-8 text-gray-800">
-            Frequently Asked Questions
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {[{
-              question: "What is a carbon footprint?",
-              answer: "A carbon footprint is the total amount of greenhouse gases, primarily carbon dioxide, released into the atmosphere as a result of human activities such as transportation, energy consumption, and industrial processes."
-            }, {
-              question: "Why should I track my carbon footprint?",
-              answer: "Tracking your carbon footprint allows you to understand the environmental impact of your daily activities and make necessary changes to reduce it."
-            }, {
-              question: "How does Carbo calculate my carbon footprint?",
-              answer: "Carbo calculates your carbon footprint using factors like travel distance, vehicle type, energy usage, and lifestyle choices, estimating your emissions with established emission factors."
-            }, {
-              question: "What can I do to reduce my carbon footprint?",
-              answer: "To reduce your carbon footprint, consider using public transportation, driving fuel-efficient vehicles, conserving energy, recycling, and supporting sustainable practices."
-            }, {
-              question: "How often should I check my carbon emissions on Carbo?",
-              answer: "You should check your carbon emissions regularly to monitor your progress, with monthly checks being a good practice."
-            }, {
-              question: "Is Carbo available on mobile devices?",
-              answer: "Yes, Carbo is mobile-friendly, allowing you to track your emissions and access resources easily from your phone."
-            }, {
-              question: "Is my data safe and secure with Carbo?",
-              answer: "Yes, Carbo uses strong encryption to ensure your personal information and carbon data are securely stored and protected."
-            }, {
-              question: "How can I provide feedback or report issues with Carbo?",
-              answer: "We value your feedback! You can share your thoughts or report any issues via our feedback section or directly contact our support team."
-            }].map((item, index) => (
-              <div
-                key={index}
-                className="p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-all ease-in-out hover:scale-105"
-              >
-                <h4 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
-                  {item.question}
-                </h4>
-                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                  {item.answer}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
-    </>
-  );
+								<div className='space-y-4 mb-6'>
+									<div className='h-2 bg-slate-700 rounded-full overflow-hidden'>
+										<div className='h-full w-3/4 bg-emerald-500 rounded-full'></div>
+									</div>
+									<div className='flex justify-between text-sm'>
+										<span className='text-gray-400'>Your Footprint</span>
+										<span className='text-white font-medium'>8.2 kg CO₂</span>
+									</div>
+
+									<div className='h-2 bg-slate-700 rounded-full overflow-hidden'>
+										<div className='h-full w-1/2 bg-emerald-500 rounded-full'></div>
+									</div>
+									<div className='flex justify-between text-sm'>
+										<span className='text-gray-400'>Average</span>
+										<span className='text-white font-medium'>12.5 kg CO₂</span>
+									</div>
+								</div>
+
+								<div className='grid grid-cols-2 gap-4'>
+									<div className='bg-slate-700/50 p-4 rounded-lg'>
+										<div className='text-xs text-gray-400 mb-1'>Transport</div>
+										<div className='text-white font-medium'>3.6 kg CO₂</div>
+									</div>
+									<div className='bg-slate-700/50 p-4 rounded-lg'>
+										<div className='text-xs text-gray-400 mb-1'>Energy</div>
+										<div className='text-white font-medium'>2.8 kg CO₂</div>
+									</div>
+									<div className='bg-slate-700/50 p-4 rounded-lg'>
+										<div className='text-xs text-gray-400 mb-1'>Food</div>
+										<div className='text-white font-medium'>1.5 kg CO₂</div>
+									</div>
+									<div className='bg-slate-700/50 p-4 rounded-lg'>
+										<div className='text-xs text-gray-400 mb-1'>Other</div>
+										<div className='text-white font-medium'>0.3 kg CO₂</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Feature Cards */}
+				<div className='mt-20 grid grid-cols-1 md:grid-cols-3 gap-8'>
+					{features.map((feature, index) => (
+						<div
+							key={index}
+							className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl transition-all duration-300 hover:border-emerald-500/50 hover:bg-slate-800/80'
+							onMouseEnter={() => setHoveredCard(index)}
+							onMouseLeave={() => setHoveredCard(null)}
+						>
+							<div
+								className={`h-12 w-12 rounded-md flex items-center justify-center mb-4 transition-all duration-300 ${
+									hoveredCard === index
+										? 'bg-emerald-500 text-white'
+										: 'bg-emerald-900/50 text-emerald-400'
+								}`}
+							>
+								{feature.icon}
+							</div>
+							<h3 className='text-white font-semibold text-lg mb-2'>
+								{feature.title}
+							</h3>
+							<p className='text-gray-400 text-sm leading-relaxed'>
+								{feature.description}
+							</p>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	);
 }

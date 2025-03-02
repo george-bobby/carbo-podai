@@ -1,214 +1,228 @@
-"use client";
-import { useState, useEffect } from "react";
-import Spinner from "../components/Spinner";
-import Link from "next/link";
+'use client';
+import { useState, useEffect } from 'react';
+import Spinner from '../components/Spinner';
+import Link from 'next/link';
 import {
-  ClerkLoaded,
-  ClerkLoading,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+	ClerkLoaded,
+	ClerkLoading,
+	SignInButton,
+	SignedIn,
+	SignedOut,
+	UserButton,
+} from '@clerk/nextjs';
+import {
+	FaHome,
+	FaCalculator,
+	FaNewspaper,
+	FaCar,
+	FaShoppingCart,
+	FaLeaf,
+	FaRobot,
+	FaBars,
+	FaTimes,
+	FaSignInAlt,
+} from 'react-icons/fa';
 
 function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [expandedItem, setExpandedItem] = useState(null);
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false);
+	const [expandedItem, setExpandedItem] = useState(null);
+	const [isSmallScreen, setIsSmallScreen] = useState(false);
+	const [scrolled, setScrolled] = useState(false);
 
-  // Handle screen size change
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 768); // Set to 768px for small screens
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize(); // Initial check on load
+	// Handle screen size change
+	useEffect(() => {
+		const handleResize = () => {
+			setIsSmallScreen(window.innerWidth < 768); // Set to 768px for small screens
+		};
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+		const handleScroll = () => {
+			setScrolled(window.scrollY > 20);
+		};
 
-  const footerItems = [
-    { name: "Dashboard", icon: "/dashboard.png" },
-    { name: "Calculator", icon: "/keys.png" },
-    { name: "Chatbot", icon: "/chatbot.png" },
-  ];
+		window.addEventListener('resize', handleResize);
+		window.addEventListener('scroll', handleScroll);
 
-  const headerItems = [
-    "Dashboard",
-    "Calculator",
-    "News",
-    "Carpool",
-    "Shop",
-    "Ecocenter",
-    "Chatbot",
-  ];
+		handleResize(); // Initial check on load
+		handleScroll(); // Initial scroll check
 
-  return (
-    <>
-      {/* Main Header */}
-      <div className="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-[#D7ECD9] px-5 py-4">
-        <div className="flex flex-wrap items-center gap-4 w-full md:w-auto justify-between">
-          {/* Header Image */}
-          <Link href="/">
-            <div className="rounded-xl h-14 w-auto">
-              <img
-                className="w-full h-full object-cover rounded-lg"
-                src="/imag1.webp"
-                alt="Carbo"
-                width={876}
-                height={156}
-              />
-            </div>
-          </Link>
+		return () => {
+			window.removeEventListener('resize', handleResize);
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
 
-          {/* Hamburger Menu Button */}
-          <div className="block md:hidden">
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="text-[#444444] focus:outline-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-8 h-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              </svg>
-            </button>
-          </div>
+	const footerItems = [
+		{ name: 'Dashboard', icon: <FaHome className='w-5 h-5' /> },
+		{ name: 'Calculator', icon: <FaCalculator className='w-5 h-5' /> },
+		{ name: 'Chatbot', icon: <FaRobot className='w-5 h-5' /> },
+	];
 
-          {/* Navigation Links */}
-          <div
-            className={`${
-              menuOpen ? "block" : "hidden"
-            } md:flex gap-4 items-center mt-4 md:mt-0 w-full md:w-auto`}
-          >
-            <div className="flex flex-col md:flex-row gap-4">
-              {headerItems
-                .filter(
-                  (item) =>
-                    !isSmallScreen ||
-                    !["Dashboard", "Calculator", "Chatbot"].includes(item)
-                )
-                .map((item) => (
-                  <Link
-                    key={item}
-                    href={`/${item.toLowerCase()}`}
-                    className="text-[#444444] py-2 px-3 rounded-lg font-medium hover:bg-[#d4d4c1] transition duration-500" // Slower transition
-                    onClick={() => setMenuOpen(false)} // Close menu after navigation
-                  >
-                    {item}
-                  </Link>
-                ))}
-            </div>
-          </div>
-        </div>
+	const headerItems = [
+		{ name: 'Dashboard', icon: <FaHome className='w-4 h-4' /> },
+		{ name: 'Calculator', icon: <FaCalculator className='w-4 h-4' /> },
+		{ name: 'News', icon: <FaNewspaper className='w-4 h-4' /> },
+		{ name: 'Carpool', icon: <FaCar className='w-4 h-4' /> },
+		{ name: 'Shop', icon: <FaShoppingCart className='w-4 h-4' /> },
+		{ name: 'Ecocenter', icon: <FaLeaf className='w-4 h-4' /> },
+		{ name: 'Chatbot', icon: <FaRobot className='w-4 h-4' /> },
+	];
 
-        {/* Profile Section */}
-        {!isSmallScreen && ( // Hide on smaller screens
-          <div className="relative flex items-center justify-end group mt-4 md:mt-0 hidden md:flex">
-            <ClerkLoading>
-              <Spinner color="black" />
-            </ClerkLoading>
+	return (
+		<>
+			{/* Main Header */}
+			<div
+				className={`sticky top-0 z-50 ${
+					scrolled ? 'backdrop-blur-md bg-slate-900/90' : 'bg-slate-900'
+				} transition-all duration-300 shadow-lg`}
+			>
+				<div className='container mx-auto px-4 py-4'>
+					<div className='flex flex-wrap items-center justify-between'>
+						<div className='flex flex-wrap items-center gap-4 w-full md:w-auto justify-between'>
+							{/* Header Logo */}
+							<Link href='/' className='flex items-center gap-2'>
+								<div className='rounded-xl h-10 w-10 bg-emerald-500 flex items-center justify-center overflow-hidden'>
+									<FaLeaf className='text-white text-xl' />
+								</div>
+								<span className='text-emerald-400 font-bold text-2xl tracking-tight'>
+									Carbo
+								</span>
+							</Link>
 
-            <ClerkLoaded>
-              <SignedIn>
-                <div className="relative group">
-                  <div className="w-auto flex items-center justify-center cursor-pointer transition-transform duration-500 hover:scale-105 active:scale-95"> {/* Slower transform */}
-                    <UserButton
-                      afterSignOutUrl="/"
-                      style={{
-                        transform: "scale(2.5)",
-                        borderRadius: "50%",
-                        marginRight: "10px",
-                        overflow: "hidden",
-                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                      }}
-                    />
-                  </div>
-                </div>
-              </SignedIn>
+							{/* Hamburger Menu Button */}
+							<div className='block md:hidden'>
+								<button
+									onClick={() => setMenuOpen(!menuOpen)}
+									className='text-white focus:outline-none bg-slate-800 p-2 rounded-md hover:bg-slate-700 transition-colors'
+									aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+								>
+									{menuOpen ? (
+										<FaTimes className='w-5 h-5' />
+									) : (
+										<FaBars className='w-5 h-5' />
+									)}
+								</button>
+							</div>
 
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <div className="relative w-auto rounded-lg flex items-center justify-center bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white py-2 px-6 font-medium cursor-pointer shadow-lg transition-all duration-500 transform hover:scale-105 hover:shadow-xl active:scale-95"> {/* Slower transition */}
-                    <span className="flex items-center gap-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25V9m-3 0h12m-12 0a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25-2.25-2.25m-12 0V5.25M9 14.25h6"
-                        />
-                      </svg>
-                      Sign In / Sign Up
-                    </span>
-                  </div>
-                </SignInButton>
-              </SignedOut>
-            </ClerkLoaded>
-          </div>
-        )}
-      </div>
+							{/* Navigation Links */}
+							<div
+								className={`${
+									menuOpen ? 'block' : 'hidden'
+								} md:flex gap-2 items-center mt-4 md:mt-0 w-full md:w-auto`}
+							>
+								<div className='flex flex-col md:flex-row gap-1 md:gap-2'>
+									{headerItems
+										.filter(
+											(item) =>
+												!isSmallScreen ||
+												!['Dashboard', 'Calculator', 'Chatbot'].includes(
+													item.name
+												)
+										)
+										.map((item) => (
+											<Link
+												key={item.name}
+												href={`/${item.name.toLowerCase()}`}
+												className='text-gray-300 py-2 px-3 rounded-md font-medium hover:bg-slate-800 hover:text-emerald-400 transition-all duration-300 flex items-center gap-2 group'
+												onClick={() => setMenuOpen(false)} // Close menu after navigation
+											>
+												<span className='text-emerald-500 group-hover:text-emerald-400 transition-colors duration-300'>
+													{item.icon}
+												</span>
+												<span className='group-hover:translate-x-1 transition-transform duration-300'>
+													{item.name}
+												</span>
+											</Link>
+										))}
+								</div>
+							</div>
+						</div>
 
-      {/* Footer for smaller screens */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#D7ECD9] flex justify-around items-center py-3 md:hidden border-t border-gray-300 z-[9]">
-        {footerItems.map((item, index) => (
-          <div
-            key={item.name}
-            className="relative flex flex-col items-center group"
-            onMouseEnter={() => setExpandedItem(index)}
-            onMouseLeave={() => setExpandedItem(null)}
-            onClick={() =>
-              setExpandedItem((prev) => (prev === index ? null : index))
-            }
-          >
-            <Link
-              href={`/${item.name.toLowerCase()}`}
-              className={`relative flex items-center gap-2 transition-all duration-500 ease-in-out ${ // Slower transition
-                expandedItem === index ? "w-auto" : "w-12"
-              }`}
-            >
-              <div
-                className={`text-[#444444] flex items-center justify-center rounded-full w-12 h-12 hover:bg-[#d4d4c1] transition duration-500 ${ // Slower transition
-                  expandedItem === index ? "bg-[#d4d4c1]" : ""
-                }`}
-              >
-                <img src={item.icon} alt={item.name} className="w-6 h-6" />
-              </div>
+						{/* Profile Section */}
+						{!isSmallScreen && ( // Hide on smaller screens
+							<div className='relative flex items-center justify-end mt-4 md:mt-0 hidden md:flex'>
+								<ClerkLoading>
+									<Spinner color='white' />
+								</ClerkLoading>
 
-              {expandedItem === index && (
-                <span className="bg-[#d4d4c1] text-[#444444] text-xs font-medium rounded px-2 py-1 shadow-lg whitespace-nowrap">
-                  {item.name}
-                </span>
-              )}
-            </Link>
-          </div>
-        ))}
-        <UserButton
-          afterSignOutUrl="/"
-          style={{
-            transform: "scale(1.5)",
-            borderRadius: "50%",
-            overflow: "hidden",
-          }}
-        />
-      </div>
-    </>
-  );
+								<ClerkLoaded>
+									<SignedIn>
+										<div className='relative group'>
+											<div className='w-auto flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95'>
+												<UserButton
+													afterSignOutUrl='/'
+													appearance={{
+														elements: {
+															userButtonAvatarBox: 'h-10 w-10',
+														},
+													}}
+												/>
+											</div>
+										</div>
+									</SignedIn>
+
+									<SignedOut>
+										<SignInButton mode='modal'>
+											<button className='relative flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white py-2 px-4 rounded-md font-medium cursor-pointer shadow-lg transition-all duration-300 hover:shadow-emerald-500/20 hover:scale-105 active:scale-95'>
+												<FaSignInAlt className='w-4 h-4' />
+												<span>Sign In</span>
+											</button>
+										</SignInButton>
+									</SignedOut>
+								</ClerkLoaded>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
+
+			{/* Footer for smaller screens */}
+			<div className='fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md flex justify-around items-center py-3 md:hidden border-t border-slate-800 z-[9] shadow-lg shadow-slate-900/50'>
+				{footerItems.map((item, index) => (
+					<div
+						key={item.name}
+						className='relative flex flex-col items-center'
+						onTouchStart={() => setExpandedItem(index)}
+						onClick={() =>
+							setExpandedItem((prev) => (prev === index ? null : index))
+						}
+					>
+						<Link
+							href={`/${item.name.toLowerCase()}`}
+							className={`relative flex items-center gap-2 transition-all duration-300 ease-in-out ${
+								expandedItem === index ? 'scale-110' : 'scale-100'
+							}`}
+						>
+							<div
+								className={`text-white flex items-center justify-center rounded-full w-12 h-12 ${
+									expandedItem === index
+										? 'bg-emerald-600 text-white'
+										: 'bg-slate-800 text-emerald-400'
+								} transition-all duration-300`}
+							>
+								{item.icon}
+							</div>
+
+							{expandedItem === index && (
+								<span className='absolute -top-8 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-medium rounded-md px-3 py-1 shadow-lg whitespace-nowrap'>
+									{item.name}
+								</span>
+							)}
+						</Link>
+					</div>
+				))}
+				<div className='bg-slate-800 rounded-full p-1 shadow-lg'>
+					<UserButton
+						afterSignOutUrl='/'
+						appearance={{
+							elements: {
+								userButtonAvatarBox: 'h-10 w-10',
+							},
+						}}
+					/>
+				</div>
+			</div>
+		</>
+	);
 }
 
 export default Header;
