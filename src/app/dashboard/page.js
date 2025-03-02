@@ -167,14 +167,6 @@ export default function UserProfile() {
 						</Tab.Panel>
 					</Tab.Panels>
 				</Tab.Group>
-
-				{/* Footer */}
-				<div className='mt-10 text-center'>
-					<p className='text-gray-400 text-sm'>
-						© 2025 Carbon Footprint Tracker • Helping you reduce your
-						environmental impact
-					</p>
-				</div>
 			</div>
 		</div>
 	);
