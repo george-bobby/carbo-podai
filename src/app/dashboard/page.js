@@ -10,12 +10,7 @@ import CarbonComparison from './CarbonComparison';
 import CarbonGauge from './CarbonGauge';
 import LineChart from './LineChart';
 import RadarChart from './RadarChart';
-import {
-	Tabs,
-	TabsList,
-	TabsTrigger,
-	TabsContent,
-} from '../../components/ui/tabs';
+import { Tab } from '@headlessui/react';
 import {
 	FaLeaf,
 	FaChartLine,
@@ -31,6 +26,7 @@ Chart.register(CategoryScale);
 
 export default function UserProfile() {
 	const { user } = useUser();
+	const [selectedIndex, setSelectedIndex] = useState(0);
 
 	const formattedDate = user?.createdAt
 		? new Date(user.createdAt).toLocaleDateString('en-US', {
@@ -68,104 +64,109 @@ export default function UserProfile() {
 				</div>
 
 				{/* Dashboard Content */}
-				<Tabs defaultValue='overview' className='w-full'>
-					<TabsList className='grid w-full grid-cols-3 bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-1 mb-6'>
-						<TabsTrigger
-							value='overview'
-							className='data-[state=active]:bg-emerald-900/50 data-[state=active]:text-emerald-400 rounded-lg py-2 text-sm font-medium transition-all'
-						>
-							Overview
-						</TabsTrigger>
-						<TabsTrigger
-							value='charts'
-							className='data-[state=active]:bg-emerald-900/50 data-[state=active]:text-emerald-400 rounded-lg py-2 text-sm font-medium transition-all'
-						>
-							Charts
-						</TabsTrigger>
-						<TabsTrigger
-							value='comparison'
-							className='data-[state=active]:bg-emerald-900/50 data-[state=active]:text-emerald-400 rounded-lg py-2 text-sm font-medium transition-all'
-						>
-							Comparison
-						</TabsTrigger>
-					</TabsList>
-
-					{/* Overview Tab */}
-					<TabsContent value='overview' className='space-y-6'>
-						<div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
-							<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-								<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-									<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-										<FaChartBar />
+				<Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+					<Tab.List className='flex space-x-1 rounded-xl bg-slate-800/50 p-1 mb-6'>
+						{['Overview', 'Charts', 'Comparison'].map((category, idx) => (
+							<Tab
+								key={idx}
+								className={({ selected }) =>
+									`w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-emerald-400
+									ring-white ring-opacity-60 ring-offset-2 ring-offset-emerald-400 focus:outline-none focus:ring-2
+									${
+										selected
+											? 'bg-emerald-900/50 shadow'
+											: 'text-emerald-100 hover:bg-emerald-900/50 hover:text-white'
+									}`
+								}
+							>
+								{category}
+							</Tab>
+						))}
+					</Tab.List>
+					<Tab.Panels className='mt-2'>
+						{/* Overview Tab */}
+						<Tab.Panel className={`rounded-xl bg-slate-800/50 p-3`}>
+							<div className='space-y-6'>
+								<div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+									<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+										<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+											<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+												<FaChartBar />
+											</div>
+											Carbon Status
+										</h2>
+										<CarbonGauge clerkId={user?.id} />
 									</div>
-									Carbon Status
-								</h2>
-								<CarbonGauge clerkId={user?.id} />
-							</div>
-							<div className='lg:col-span-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-								<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-									<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-										<FaChartLine />
+									<div className='lg:col-span-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+										<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+											<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+												<FaChartLine />
+											</div>
+											Carbon Trends
+										</h2>
+										<LineChart clerkId={user?.id} />
 									</div>
-									Carbon Trends
-								</h2>
-								<LineChart clerkId={user?.id} />
-							</div>
-						</div>
-					</TabsContent>
-
-					{/* Charts Tab */}
-					<TabsContent value='charts' className='space-y-6'>
-						<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-							<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-								<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-									<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-										<FaChartPie />
-									</div>
-									Impact by Category
-								</h2>
-								<PieChart clerkId={user?.id} />
-							</div>
-							<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-								<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-									<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-										<FaChartBar />
-									</div>
-									Category Breakdown
-								</h2>
-								<RadarChart clerkId={user?.id} />
-							</div>
-						</div>
-
-						<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-							<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-								<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-									<FaChartBar />
 								</div>
-								Monthly Carbon Footprint
-							</h2>
-							<BarGraph clerkId={user?.id} />
-						</div>
-					</TabsContent>
+							</div>
+						</Tab.Panel>
 
-					{/* Comparison Tab */}
-					<TabsContent value='comparison' className='space-y-6'>
-						<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-							<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-								<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-									<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-										<FaBalanceScale />
+						{/* Charts Tab */}
+						<Tab.Panel className={`rounded-xl bg-slate-800/50 p-3`}>
+							<div className='space-y-6'>
+								<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+									<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+										<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+											<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+												<FaChartPie />
+											</div>
+											Impact by Category
+										</h2>
+										<PieChart clerkId={user?.id} />
 									</div>
-									National Comparison
-								</h2>
-								<CarbonComparison clerkId={user?.id} />
+									<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+										<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+											<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+												<FaChartBar />
+											</div>
+											Category Breakdown
+										</h2>
+										<RadarChart clerkId={user?.id} />
+									</div>
+								</div>
+
+								<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+									<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+										<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+											<FaChartBar />
+										</div>
+										Monthly Carbon Footprint
+									</h2>
+									<BarGraph clerkId={user?.id} />
+								</div>
 							</div>
-							<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-								<EquivalenciesTable clerkId={user?.id} />
+						</Tab.Panel>
+
+						{/* Comparison Tab */}
+						<Tab.Panel className={`rounded-xl bg-slate-800/50 p-3`}>
+							<div className='space-y-6'>
+								<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+									<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+										<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+											<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+												<FaBalanceScale />
+											</div>
+											National Comparison
+										</h2>
+										<CarbonComparison clerkId={user?.id} />
+									</div>
+									<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+										<EquivalenciesTable clerkId={user?.id} />
+									</div>
+								</div>
 							</div>
-						</div>
-					</TabsContent>
-				</Tabs>
+						</Tab.Panel>
+					</Tab.Panels>
+				</Tab.Group>
 
 				{/* Footer */}
 				<div className='mt-10 text-center'>
