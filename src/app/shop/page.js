@@ -81,7 +81,7 @@ const ShoppingTracker = () => {
 						</div>
 					</div>
 				)}
-				<span className='ml-1 text-sm text-gray-600'>{rating}</span>
+				<span className='ml-1 text-sm text-gray-400'>{rating}</span>
 			</div>
 		);
 	};
@@ -103,14 +103,20 @@ const ShoppingTracker = () => {
 	};
 
 	return (
-		<div className='bg-gradient-to-b from-green-50 to-white min-h-screen'>
-			<div className='container mx-auto px-4 py-8'>
+		<div className='relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900'>
+			{/* Background Elements */}
+			<div className='absolute -top-40 -right-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl'></div>
+			<div className='absolute top-60 -left-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl'></div>
+
+			{/* Main Content */}
+			<div className='relative z-10 container mx-auto px-4 py-12'>
+				{/* Header */}
 				<div className='text-center mb-12'>
-					<h1 className='text-3xl md:text-4xl font-bold text-green-800 mb-3'>
+					<h1 className='text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center'>
 						<ShoppingBag className='inline-block mr-2 mb-1' size={32} />
 						Sustainable Products
 					</h1>
-					<p className='text-gray-600 max-w-2xl mx-auto'>
+					<p className='text-gray-400 max-w-2xl mx-auto'>
 						Browse our collection of eco-friendly products to reduce your carbon
 						footprint and support sustainable living
 					</p>
@@ -124,13 +130,13 @@ const ShoppingTracker = () => {
 							placeholder='Search sustainable products...'
 							value={searchTerm}
 							onChange={handleSearchChange}
-							className='w-full px-4 py-3 pl-12 pr-12 bg-white border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300'
+							className='w-full px-4 py-3 pl-12 pr-12 bg-slate-700/50 border border-slate-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 text-white placeholder-gray-400'
 						/>
-						<Search className='absolute left-4 text-green-600 w-5 h-5' />
+						<Search className='absolute left-4 text-emerald-400 w-5 h-5' />
 						{searchTerm && (
 							<button
 								onClick={clearSearch}
-								className='absolute right-4 text-gray-400 hover:text-gray-600 transition-colors'
+								className='absolute right-4 text-gray-400 hover:text-emerald-400 transition-colors'
 							>
 								<X size={18} />
 							</button>
@@ -140,13 +146,13 @@ const ShoppingTracker = () => {
 					<div className='flex justify-between items-center'>
 						<button
 							onClick={() => setShowFilters(!showFilters)}
-							className='flex items-center text-sm font-medium text-green-700 hover:text-green-900 transition-colors'
+							className='flex items-center text-sm font-medium text-emerald-400 hover:text-emerald-500 transition-colors'
 						>
 							<Filter size={16} className='mr-1' />
 							{showFilters ? 'Hide Filters' : 'Show Filters'}
 						</button>
 
-						<span className='text-sm text-gray-500'>
+						<span className='text-sm text-gray-400'>
 							Showing {filteredProducts.length} of {productsData.length}{' '}
 							products
 						</span>
@@ -154,15 +160,15 @@ const ShoppingTracker = () => {
 
 					{/* Filter Options (expandable) */}
 					{showFilters && (
-						<div className='bg-white p-4 mt-3 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-3 gap-4 animate-fadeIn'>
+						<div className='bg-slate-800/90 backdrop-blur-sm border border-slate-700 p-4 mt-3 rounded-lg shadow-2xl grid grid-cols-1 md:grid-cols-3 gap-4 animate-fadeIn'>
 							<div>
-								<label className='block text-sm font-medium text-gray-700 mb-2'>
+								<label className='block text-sm font-medium text-gray-400 mb-2'>
 									Price Range
 								</label>
 								<select
 									value={priceRange}
 									onChange={(e) => setPriceRange(e.target.value)}
-									className='w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent'
+									className='w-full p-2 bg-slate-700/50 border border-slate-600 rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white'
 								>
 									<option>All Prices</option>
 									<option>Under ₹500</option>
@@ -173,13 +179,13 @@ const ShoppingTracker = () => {
 							</div>
 
 							<div>
-								<label className='block text-sm font-medium text-gray-700 mb-2'>
+								<label className='block text-sm font-medium text-gray-400 mb-2'>
 									Rating
 								</label>
 								<select
 									value={ratingFilter}
 									onChange={(e) => setRatingFilter(e.target.value)}
-									className='w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent'
+									className='w-full p-2 bg-slate-700/50 border border-slate-600 rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white'
 								>
 									<option>All Ratings</option>
 									<option>4★ & Above</option>
@@ -189,13 +195,13 @@ const ShoppingTracker = () => {
 							</div>
 
 							<div>
-								<label className='block text-sm font-medium text-gray-700 mb-2'>
+								<label className='block text-sm font-medium text-gray-400 mb-2'>
 									Store
 								</label>
 								<select
 									value={storeFilter}
 									onChange={(e) => setStoreFilter(e.target.value)}
-									className='w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent'
+									className='w-full p-2 bg-slate-700/50 border border-slate-600 rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-white'
 								>
 									<option>All Stores</option>
 									<option>Amazon</option>
@@ -212,7 +218,7 @@ const ShoppingTracker = () => {
 						filteredProducts.map((product, index) => (
 							<div
 								key={index}
-								className='bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300'
+								className='bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-xl shadow-2xl overflow-hidden hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300'
 							>
 								<div className='relative pt-[100%] overflow-hidden group'>
 									<img
@@ -225,7 +231,7 @@ const ShoppingTracker = () => {
 									{/* Favorite Button */}
 									<button
 										onClick={() => toggleFavorite(index)}
-										className='absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300'
+										className='absolute top-2 right-2 p-2 bg-slate-700/50 rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300'
 									>
 										<Heart
 											size={18}
@@ -245,8 +251,8 @@ const ShoppingTracker = () => {
 											className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
 												product.productUrl &&
 												product.productUrl.includes('amazon')
-													? 'bg-orange-100 text-orange-800'
-													: 'bg-blue-100 text-blue-800'
+													? 'bg-orange-500/10 text-orange-400'
+													: 'bg-blue-500/10 text-blue-400'
 											}`}
 										>
 											<Tag size={12} className='mr-1' />
@@ -258,12 +264,12 @@ const ShoppingTracker = () => {
 									</div>
 
 									{/* Product Name */}
-									<h3 className='text-sm font-medium text-gray-800 mb-2 line-clamp-2 h-10 group-hover:text-green-700'>
+									<h3 className='text-sm font-medium text-white mb-2 line-clamp-2 h-10 group-hover:text-emerald-400'>
 										{product.productName || 'Sustainable Product'}
 									</h3>
 
 									<div className='flex justify-between items-start mb-3'>
-										<span className='text-xl font-bold text-gray-900'>
+										<span className='text-xl font-bold text-white'>
 											₹{product.price}
 										</span>
 										<RatingStars rating={product.rating} />
@@ -273,7 +279,7 @@ const ShoppingTracker = () => {
 										href={product.productUrl || '#'}
 										target='_blank'
 										rel='noopener noreferrer'
-										className='mt-4 flex items-center justify-center w-full text-center bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-300 group'
+										className='mt-4 flex items-center justify-center w-full text-center bg-emerald-500 text-white py-2 px-4 rounded-lg hover:bg-emerald-600 transition-colors duration-300 group'
 									>
 										<span>View Product</span>
 										<ExternalLink
@@ -287,18 +293,18 @@ const ShoppingTracker = () => {
 					) : (
 						<div className='col-span-full text-center py-12'>
 							<div className='max-w-md mx-auto'>
-								<div className='bg-white p-8 rounded-lg shadow-md'>
+								<div className='bg-slate-800/90 backdrop-blur-sm border border-slate-700 p-8 rounded-lg shadow-2xl'>
 									<X size={48} className='mx-auto text-gray-400 mb-4' />
-									<h3 className='text-xl font-semibold text-gray-800 mb-2'>
+									<h3 className='text-xl font-semibold text-white mb-2'>
 										No matching products found
 									</h3>
-									<p className='text-gray-600 mb-4'>
+									<p className='text-gray-400 mb-4'>
 										Try adjusting your search or filter criteria to find what
 										you're looking for.
 									</p>
 									<button
 										onClick={clearSearch}
-										className='inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+										className='inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500'
 									>
 										Clear Search
 									</button>
@@ -314,25 +320,25 @@ const ShoppingTracker = () => {
 						<nav className='inline-flex rounded-md shadow-sm'>
 							<a
 								href='#'
-								className='px-4 py-2 bg-white text-green-600 border border-gray-300 rounded-l-md hover:bg-gray-50'
+								className='px-4 py-2 bg-slate-700/50 text-emerald-400 border border-slate-600 rounded-l-md hover:bg-slate-700/80'
 							>
 								Previous
 							</a>
 							<a
 								href='#'
-								className='px-4 py-2 bg-green-600 text-white border border-green-600'
+								className='px-4 py-2 bg-emerald-500 text-white border border-emerald-500'
 							>
 								1
 							</a>
 							<a
 								href='#'
-								className='px-4 py-2 bg-white text-green-600 border border-gray-300 hover:bg-gray-50'
+								className='px-4 py-2 bg-slate-700/50 text-emerald-400 border border-slate-600 hover:bg-slate-700/80'
 							>
 								2
 							</a>
 							<a
 								href='#'
-								className='px-4 py-2 bg-white text-green-600 border border-gray-300 rounded-r-md hover:bg-gray-50'
+								className='px-4 py-2 bg-slate-700/50 text-emerald-400 border border-slate-600 rounded-r-md hover:bg-slate-700/80'
 							>
 								Next
 							</a>
