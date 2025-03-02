@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Chart from 'chart.js/auto';
 import { CategoryScale } from 'chart.js';
@@ -10,6 +10,12 @@ import CarbonComparison from './CarbonComparison';
 import CarbonGauge from './CarbonGauge';
 import LineChart from './LineChart';
 import RadarChart from './RadarChart';
+import {
+	Tabs,
+	TabsList,
+	TabsTrigger,
+	TabsContent,
+} from '../../components/ui/tabs';
 import {
 	FaLeaf,
 	FaChartLine,
@@ -62,78 +68,104 @@ export default function UserProfile() {
 				</div>
 
 				{/* Dashboard Content */}
-				<div className='space-y-6'>
-					{/* Top Row: Gauge and Line Chart */}
-					<div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
-						<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-							<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-								<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-									<FaChartBar />
-								</div>
-								Carbon Status
-							</h2>
-							<CarbonGauge clerkId={user?.id} />
-						</div>
-						<div className='lg:col-span-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-							<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-								<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-									<FaChartLine />
-								</div>
-								Carbon Trends
-							</h2>
-							<LineChart clerkId={user?.id} />
-						</div>
-					</div>
+				<Tabs defaultValue='overview' className='w-full'>
+					<TabsList className='grid w-full grid-cols-3 bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-1 mb-6'>
+						<TabsTrigger
+							value='overview'
+							className='data-[state=active]:bg-emerald-900/50 data-[state=active]:text-emerald-400 rounded-lg py-2 text-sm font-medium transition-all'
+						>
+							Overview
+						</TabsTrigger>
+						<TabsTrigger
+							value='charts'
+							className='data-[state=active]:bg-emerald-900/50 data-[state=active]:text-emerald-400 rounded-lg py-2 text-sm font-medium transition-all'
+						>
+							Charts
+						</TabsTrigger>
+						<TabsTrigger
+							value='comparison'
+							className='data-[state=active]:bg-emerald-900/50 data-[state=active]:text-emerald-400 rounded-lg py-2 text-sm font-medium transition-all'
+						>
+							Comparison
+						</TabsTrigger>
+					</TabsList>
 
-					{/* Middle Row: Pie Chart and Radar Chart */}
-					<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-						<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-							<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-								<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-									<FaChartPie />
-								</div>
-								Impact by Category
-							</h2>
-							<PieChart clerkId={user?.id} />
-						</div>
-						<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-							<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-								<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-									<FaChartBar />
-								</div>
-								Category Breakdown
-							</h2>
-							<RadarChart clerkId={user?.id} />
-						</div>
-					</div>
-
-					{/* Third Row: Bar Graph */}
-					<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-						<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
-							<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-								<FaChartBar />
+					{/* Overview Tab */}
+					<TabsContent value='overview' className='space-y-6'>
+						<div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+							<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+								<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+									<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+										<FaChartBar />
+									</div>
+									Carbon Status
+								</h2>
+								<CarbonGauge clerkId={user?.id} />
 							</div>
-							Monthly Carbon Footprint
-						</h2>
-						<BarGraph clerkId={user?.id} />
-					</div>
+							<div className='lg:col-span-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+								<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+									<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+										<FaChartLine />
+									</div>
+									Carbon Trends
+								</h2>
+								<LineChart clerkId={user?.id} />
+							</div>
+						</div>
+					</TabsContent>
 
-					{/* Fourth Row: Comparison and Equivalencies */}
-					<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+					{/* Charts Tab */}
+					<TabsContent value='charts' className='space-y-6'>
+						<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+							<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+								<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+									<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+										<FaChartPie />
+									</div>
+									Impact by Category
+								</h2>
+								<PieChart clerkId={user?.id} />
+							</div>
+							<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+								<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+									<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+										<FaChartBar />
+									</div>
+									Category Breakdown
+								</h2>
+								<RadarChart clerkId={user?.id} />
+							</div>
+						</div>
+
 						<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
 							<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
 								<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
-									<FaBalanceScale />
+									<FaChartBar />
 								</div>
-								National Comparison
+								Monthly Carbon Footprint
 							</h2>
-							<CarbonComparison clerkId={user?.id} />
+							<BarGraph clerkId={user?.id} />
 						</div>
-						<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
-							<EquivalenciesTable clerkId={user?.id} />
+					</TabsContent>
+
+					{/* Comparison Tab */}
+					<TabsContent value='comparison' className='space-y-6'>
+						<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+							<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+								<h2 className='text-xl font-bold mb-4 text-white flex items-center gap-2'>
+									<div className='h-8 w-8 rounded-md bg-emerald-900/50 flex items-center justify-center text-emerald-400'>
+										<FaBalanceScale />
+									</div>
+									National Comparison
+								</h2>
+								<CarbonComparison clerkId={user?.id} />
+							</div>
+							<div className='bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl shadow-xl transition-all duration-300 hover:border-emerald-500/30'>
+								<EquivalenciesTable clerkId={user?.id} />
+							</div>
 						</div>
-					</div>
-				</div>
+					</TabsContent>
+				</Tabs>
 
 				{/* Footer */}
 				<div className='mt-10 text-center'>
