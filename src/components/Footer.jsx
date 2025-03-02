@@ -62,7 +62,7 @@ export default function Footer() {
 								},
 								{
 									icon: <FaLeaf className='text-emerald-400' />,
-									label: 'Electic Appliances',
+									label: 'Electric Appliances',
 									href: '/ecocenter',
 								},
 								{
